@@ -19,6 +19,11 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
+// Add this route for the root URL
+app.get('/', (req, res) => {
+    res.send('Server is running successfully!');
+});
+
 // Routes
 app.use('/api/v1/auth', require('./routes/userRoutes'));
 
