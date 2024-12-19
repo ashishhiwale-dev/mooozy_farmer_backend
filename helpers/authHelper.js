@@ -1,23 +1,22 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs');
 
-//  Hash Function
-exports.hashPassword = (password) => {
-    return new Promise((resolve,reject) => {
-        bcrypt.genSalt(10, (err,salt) => {
-            if(err){
-                reject(err)
-            }
-            bcrypt.hash(password,salt, (err,hash) => {
-                if(err){
-                    reject(err)
-                }
-                resolve(hash)
-            })
-        })
-    })
-}
+// Hash Function
+exports.hashPassword = async (password) => {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        return hashedPassword;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
 
-//Decrypt Function
-exports.comparePassword = (password, hashed) => {
-    return bcrypt.compare(password, hashed);
-}
+// Compare Function
+exports.comparePassword = async (password, hashed) => {
+    try {
+        const isMatch = await bcrypt.compare(password, hashed);
+        return isMatch;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
